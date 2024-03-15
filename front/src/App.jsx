@@ -7,6 +7,7 @@ function App() {
   const [food, setFood] = useState([])
   const [tab, setTab] = useState('foods')
   const [favorites, setFavorites] = useState([])
+  const [selectedFood, setSelectedFood] = useState(null)
 
   const searchFood = async (e) => {
     e.preventDefault()
@@ -28,61 +29,84 @@ function App() {
 
   const addFavorite = async (meal) => {
     await axios.post('/api/favorites', meal)
+    alert('Added to favorites')
     setFavorites([...favorites, meal])
   }
 
   const removeFavorite = async (id) => {
     await axios.delete(`/api/favorites/${id}`)
+    alert('Removed from favorites')
     setFavorites(favorites.filter(f => f.idMeal !== id))
   }
 
   return (
     <>
-      <h1>Food</h1>
-      <div className="tabs">
-        <button onClick={() => setTab('foods')} className={tab === 'foods' ? 'active' : ''}>Foods</button>
-        <button onClick={() => setTab('favorites')} className={tab === 'favorites' ? 'active' : ''}>Favorites</button>
-      </div>
-      {tab === 'foods' && (
-        <>
-          <form onSubmit={searchFood}>
-            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} />
-            <button>Search</button>
-          </form>
-          <div className="food">
-            {food.length === 0 && <p>No food to display</p>}
-            {food.map((f, i) => (
-              <div key={i} className="card">
-                <img src={f.strMealThumb} alt={f.strMeal} />
-                <h2>{f.strMeal}</h2>
-                <button onClick={() => addFavorite(f)}>Add to favorites</button>
-              </div>
-            ))}
+      {selectedFood ? (
+        <div className="modal" onClick={() => setSelectedFood(null)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <h2>{selectedFood.strMeal}</h2>
+            <img src={selectedFood.strMealThumb} alt={selectedFood.strMeal} />
+            <p>{selectedFood.strInstructions}</p>
+            <form onSubmit={e => e.preventDefault()}>
+              <button onClick={() => addFavorite(selectedFood)}>Add to favorites</button>
+              <button onClick={() => setSelectedFood(null)}>Close</button>
+            </form>
           </div>
-          <div className="alphabet">
-            {
-              'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((letter, i) => (
-                <button key={i} onClick={() => {
-                  setSearch(letter);
-                  searchFood({ preventDefault: () => { } });
-                }}>{letter}</button>
-              ))
-            }
-          </div>
-        </>
-      )}
-      {tab === 'favorites' && (
-        <div className="food">
-          {favorites.length === 0 && <p>No favorite to display</p>}
-          {favorites.map((f, i) => (
-            <div key={i} className="card">
-              <img src={f.strMealThumb} alt={f.strMeal} />
-              <h2>{f.strMeal}</h2>
-              <button onClick={() => removeFavorite(f.idMeal)}>Remove from favorites</button>
-            </div>
-          ))}
         </div>
-      )}
+      ) :
+        (
+          <>
+            <h1>Food</h1>
+            <div className="tabs">
+              <button onClick={() => setTab('foods')} className={tab === 'foods' ? 'active' : ''}>Foods</button>
+              <button onClick={() => setTab('favorites')} className={tab === 'favorites' ? 'active' : ''}>Favorites</button>
+            </div>
+            {
+              tab === 'foods' ? (
+                <>
+                  <form onSubmit={searchFood}>
+                    <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} />
+                    <button>Search</button>
+                  </form>
+                  <div className="food">
+                    {food.length === 0 && <p>No food to display</p>}
+                    {food.map((f, i) => (
+                      <div key={i} className="card">
+                        <img src={f.strMealThumb} alt={f.strMeal} onClick={() => setSelectedFood(f)} />
+                        <h2>{f.strMeal}</h2>
+                        <button onClick={() => addFavorite(f)}>Add to favorites</button>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="alphabet">
+                    {
+                      'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((letter, i) => (
+                        <button key={i} onClick={() => {
+                          setSearch(letter);
+                          searchFood({ preventDefault: () => { } });
+                        }}>{letter}</button>
+                      ))
+                    }
+                  </div>
+                </>
+              )
+                :
+                (
+                  <div className="food">
+                    {favorites.length === 0 && <p>No favorite to display</p>}
+                    {favorites.map((f, i) => (
+                      <div key={i} className="card">
+                        <img src={f.strMealThumb} alt={f.strMeal} />
+                        <h2>{f.strMeal}</h2>
+                        <button onClick={() => removeFavorite(f.idMeal)}>Remove from favorites</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+          </>
+        )
+
+      }
     </>
   )
 }

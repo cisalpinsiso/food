@@ -5,6 +5,12 @@
   color: #333;
 }
 
+#root {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
 input {
   font-size: 16px;
   padding: 10px;
@@ -41,6 +47,12 @@ form {
   height: 200px;
   object-fit: cover;
   border-radius: 5px;
+  cursor: pointer;
+  transition: filter 0.3s;
+}
+
+.food img:hover {
+  filter: brightness(0.8);
 }
 
 .food div {
@@ -75,4 +87,5 @@ form {
   display: flex;
   gap: 10px;
   justify-content: center;
+  margin-top: auto;
 }
