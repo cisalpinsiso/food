@@ -1,0 +1,78 @@
+:root {
+  background-color: #f5f5f5;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #333;
+}
+
+input {
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+button {
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.food {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.food img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.food div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.food h2 {
+  font-size: 24px;
+  color: #333;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.tabs button {
+  border: none;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background-color: #ccc;
+}
+
+.alphabet {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
