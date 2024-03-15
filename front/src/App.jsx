@@ -8,6 +8,17 @@ function App() {
   const [tab, setTab] = useState('foods')
   const [favorites, setFavorites] = useState([])
   const [selectedFood, setSelectedFood] = useState(null)
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    console.log('scrollY', scrollY)
+  }, [scrollY])
 
   const searchFood = async (e) => {
     e.preventDefault()
@@ -60,6 +71,10 @@ function App() {
             <div className="tabs">
               <button onClick={() => setTab('foods')} className={tab === 'foods' ? 'active' : ''}>Foods</button>
               <button onClick={() => setTab('favorites')} className={tab === 'favorites' ? 'active' : ''}>Favorites</button>
+            </div>
+            <div className='arrows'>
+              <button className={`arrowUp ${scrollY === 0 && "hidden"}`} onClick={() => window.scrollTo(0, 0)}>↑</button>
+              <button className={`arrowDown ${scrollY > 0 && "hidden"}`} onClick={() => window.scrollTo(0, document.body.scrollHeight)}>↓</button>
             </div>
             {
               tab === 'foods' ? (

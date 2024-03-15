@@ -89,3 +89,21 @@ form {
   justify-content: center;
   margin-top: auto;
 }
+
+.arrows > button {
+  position: fixed;
+  right: 30px;
+  margin: 150px 0;
+}
+
+.arrows > button.hidden {
+  display: none;
+}
+
+.arrowUp {
+  top: 0px;
+}
+
+.arrowDown {
+  bottom: 0px;
+}
